@@ -2,7 +2,6 @@ import glob
 from collections import defaultdict
 import functools
 import operator
-#Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
 
 def sample2dict(sample):
     terms = [term.split() for term in sample]
@@ -25,7 +24,6 @@ def maxsamples(samples):
     return m
 
 def possible(bag, samples):
-    d={"red":12, "green": 13, "blue":14}
     for key in bag:
         for sample in samples:
             if key in sample and bag[key]-sample[key]<0:
