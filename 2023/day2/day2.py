@@ -30,8 +30,6 @@ def possible(bag, samples):
                 return False
     return True
      
-foldl = lambda func, acc, xs: functools.reduce(func, xs, acc)
-
 for fname in glob.glob("day2*input*.txt"):
     d={"red":12, "green": 13, "blue":14}
     g=((i+1,possible(d,game)) for (i,game) in enumerate(read_games(fname)))
@@ -39,5 +37,5 @@ for fname in glob.glob("day2*input*.txt"):
     print(f"Problem 1, {fname}: {sum(g)}")
 
     g=((i+1,maxsamples(game)) for (i,game) in enumerate(read_games(fname)))
-    N=sum(foldl(operator.mul, 1, d.values()) for (i,d) in g)
+    N=sum(functools.reduce(operator.mul, d.values(), 1) for (i,d) in g)
     print(f"Problem 2, {fname}: {N}") 
