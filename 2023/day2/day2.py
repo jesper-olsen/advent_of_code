@@ -1,12 +1,11 @@
 import glob
-from collections import defaultdict
+import collections
 import functools
 import operator
 
 def sample2dict(sample):
     terms = [term.split() for term in sample]
-    terms = {label:int(cnt) for (cnt,label) in terms}
-    return terms
+    return {label:int(cnt) for (cnt,label) in terms}
 
 def read_games(fname):
     g=(line.strip() for line in open(fname))
@@ -17,20 +16,16 @@ def read_games(fname):
         yield [sample2dict(sample) for sample in samples]
  
 def maxsamples(samples):
-    m=defaultdict(int)
+    m=collections.defaultdict(int)
     for sample in samples:
         for key in sample:
             m[key]=max(m[key], sample[key])
     return m
 
 def possible(bag, samples):
-    for key in bag:
-        for sample in samples:
-            if key in sample and bag[key]-sample[key]<0:
-                return False
-    return True
+    return all((bag[key]-sample[key]>=0 for sample in samples for key in sample))
      
-for fname in glob.glob("day2*input*.txt"):
+for fname in glob.glob("day2_input*.txt"):
     d={"red":12, "green": 13, "blue":14}
     g=((i+1,possible(d,game)) for (i,game) in enumerate(read_games(fname)))
     g=(i for (i,flag) in g if flag)
