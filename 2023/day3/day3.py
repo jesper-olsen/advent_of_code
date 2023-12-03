@@ -1,33 +1,42 @@
+import glob
+import functools
+import operator
 # answers prob 1: 4361, 544433
+# answers prob 2: 467835, 76314915 
+
 def extract_number(x,y, lines, WIDTH, HEIGHT):
     x1=x
-    while x1>0 and lines[y][x1-1] in '0123456789':
+    while x1>0 and lines[y][x1-1].isdigit():
         x1-=1
     x2=x
-    while x2<WIDTH-1 and lines[y][x2+1] in '0123456789':
-        print(f"{x1}..{x2}, {y}: {lines[y][x1:x2+1]}")
+    while x2<WIDTH-1 and lines[y][x2+1].isdigit():
         x2+=1
     return y*WIDTH+x1,int(lines[y][x1:x2+1])
      
 def find_numbers(x,y, lines, WIDTH, HEIGHT):
-    print("Find", x,y)
+    used=set()
     for (z,k) in [(x+1,y), (x-1,y), (x,y+1), (x,y-1), (x+1,y+1), (x+1,y-1), (x-1,y-1), (x-1,y+1)]:
         if z>=0 and z<WIDTH and k>=0 and k<HEIGHT:
-             #print(z,k,lines[k][z])
-             if lines[k][z] in '0123456789':
-                print(extract_number(z,k, lines, WIDTH, HEIGHT))
-                yield extract_number(z,k, lines, WIDTH, HEIGHT)
+             if lines[k][z].isdigit():
+                q,n=extract_number(z,k, lines, WIDTH, HEIGHT)
+                if not q in used:
+                    used.add(q)
+                    yield n
 
-lines=[line.strip() for line in open("day3_input_short.txt")]
-WIDTH=len(lines[0])
-HEIGHT=len(lines)
-#SYMBOLS=((i,c) for (i,c) in enumerate("".join(lines)) if c in "*#+$*")
-SYMBOLS=((x,y) for (x,line) in enumerate(lines) for (y,c) in enumerate(line) if c not in "0123456789.")
-N=0
-used=set()
-for (y,x) in SYMBOLS:
-    for (i,n) in find_numbers(x,y, lines, WIDTH, HEIGHT):
-        if not i in used:
-            N+=n
-            used.add(i) 
-print(N)
+for fname in glob.glob("day3_input*.txt"):
+    lines=[line.strip() for line in open(fname)]
+    WIDTH=len(lines[0])
+    HEIGHT=len(lines)
+    SYMBOLS=((x,y) for (y,line) in enumerate(lines) for (x,c) in enumerate(line) if c not in "0123456789.")
+    N=sum([n for (x,y) in SYMBOLS for n in find_numbers(x,y,lines,WIDTH,HEIGHT)])
+    print(f"Problem 1, {fname}: {N}")
+
+    GEARS=((x,y) for (y,line) in enumerate(lines) for (x,c) in enumerate(line) if c in "*")
+
+    N=0
+    for (x,y) in GEARS:
+        l=[n for n in find_numbers(x,y, lines, WIDTH, HEIGHT)]
+        if len(l)>1:
+            N+=functools.reduce(operator.mul, l, 1)
+ 
+    print(f"Problem 2, {fname}: {N}")
