@@ -4,23 +4,23 @@ import operator
 # answers prob 1: 4361, 544433
 # answers prob 2: 467835, 76314915 
 
-def extract_number(x,y, lines, WIDTH):
+def extract_number(x, line):
     x1=x
-    while x1>0 and lines[y][x1-1].isdigit():
+    while x1>0 and line[x1-1].isdigit():
         x1-=1
     x2=x
-    while x2<WIDTH-1 and lines[y][x2+1].isdigit():
+    while x2<len(line)-1 and line[x2+1].isdigit():
         x2+=1
-    return y*WIDTH+x1,int(lines[y][x1:x2+1])
+    return x1,int(line[x1:x2+1])
      
 def find_numbers(x,y, lines, WIDTH, HEIGHT):
     used=set()
     for (z,k) in [(x+u,y+v) for u in (-1,0,1) for v in (-1,0,1) if (u,v)!=(0,0)]:
         if z>=0 and z<WIDTH and k>=0 and k<HEIGHT:
              if lines[k][z].isdigit():
-                q,n=extract_number(z,k, lines, WIDTH)
-                if not q in used:
-                    used.add(q)
+                q,n=extract_number(z, lines[k])
+                if not (q,k) in used:
+                    used.add((q,k))
                     yield n
 
 for fname in glob.glob("day3_input*.txt"):
