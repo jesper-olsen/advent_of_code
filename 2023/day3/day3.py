@@ -5,23 +5,22 @@ import operator
 # answers prob 2: 467835, 76314915 
 
 def extract_number(x, line):
-    x1=x
-    while x1>0 and line[x1-1].isdigit():
-        x1-=1
-    x2=x
-    while x2<len(line)-1 and line[x2+1].isdigit():
-        x2+=1
-    return x1,int(line[x1:x2+1])
+    i=x
+    while i>0 and line[i-1].isdigit():
+        i-=1
+    j=x
+    while j<len(line)-1 and line[j+1].isdigit():
+        j+=1
+    return i,j
      
 def find_numbers(x,y, lines, WIDTH):
     used=set()
     for (z,k) in [(x+u,y+v) for u in (-1,0,1) for v in (-1,0,1) if (u,v)!=(0,0)]:
         if z>=0 and z<WIDTH and k>=0 and k<len(lines):
-             if lines[k][z].isdigit():
-                q,n=extract_number(z, lines[k])
-                if not (q,k) in used:
-                    used.add((q,k))
-                    yield n
+             if lines[k][z].isdigit() and not k*WIDTH+z in used:
+                i,j=extract_number(z, lines[k])
+                used |= set([k*WIDTH+q for q in range(i,j+1)])
+                yield int(lines[k][i:j+1])
 
 for fname in glob.glob("day3_input*.txt"):
     lines=[line.strip() for line in open(fname)]
@@ -37,5 +36,4 @@ for fname in glob.glob("day3_input*.txt"):
         l=[n for n in find_numbers(x,y, lines, WIDTH)]
         if len(l)>1:
             N+=functools.reduce(operator.mul, l, 1)
- 
     print(f"Problem 2, {fname}: {N}")
