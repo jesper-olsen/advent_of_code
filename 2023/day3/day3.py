@@ -15,7 +15,7 @@ def extract_number(x,y, lines, WIDTH):
      
 def find_numbers(x,y, lines, WIDTH, HEIGHT):
     used=set()
-    for (z,k) in [(x+u,x+v) for u in (-1,0,1) for v in (-1,0,1) if (u,v)!=(0,0)]:
+    for (z,k) in [(x+u,y+v) for u in (-1,0,1) for v in (-1,0,1) if (u,v)!=(0,0)]:
         if z>=0 and z<WIDTH and k>=0 and k<HEIGHT:
              if lines[k][z].isdigit():
                 q,n=extract_number(z,k, lines, WIDTH)
