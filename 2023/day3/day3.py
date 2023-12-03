@@ -4,7 +4,7 @@ import operator
 # answers prob 1: 4361, 544433
 # answers prob 2: 467835, 76314915 
 
-def extract_number(x,y, lines, WIDTH, HEIGHT):
+def extract_number(x,y, lines, WIDTH):
     x1=x
     while x1>0 and lines[y][x1-1].isdigit():
         x1-=1
@@ -18,7 +18,7 @@ def find_numbers(x,y, lines, WIDTH, HEIGHT):
     for (z,k) in [(x+u,x+v) for u in (-1,0,1) for v in (-1,0,1) if (u,v)!=(0,0)]:
         if z>=0 and z<WIDTH and k>=0 and k<HEIGHT:
              if lines[k][z].isdigit():
-                q,n=extract_number(z,k, lines, WIDTH, HEIGHT)
+                q,n=extract_number(z,k, lines, WIDTH)
                 if not q in used:
                     used.add(q)
                     yield n
