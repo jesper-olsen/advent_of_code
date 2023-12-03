@@ -30,7 +30,6 @@ for fname in glob.glob("day3_input*.txt"):
     print(f"Problem 1, {fname}: {N}")
 
     GEARS=((x,y) for (y,line) in enumerate(lines) for (x,c) in enumerate(line) if c in "*")
-
     N=0
     for (x,y) in GEARS:
         l=[n for n in find_numbers(x,y, lines, WIDTH)]
