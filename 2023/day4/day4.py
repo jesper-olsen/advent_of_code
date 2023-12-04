@@ -19,4 +19,3 @@ for fname in glob.glob("*input*.txt"):
 
     N=sum([wcards(L[i],L[i:]) for i in range(len(L))])
     print(f"{fname} part2: {N}")
-        
