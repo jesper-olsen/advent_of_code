@@ -3,7 +3,7 @@ import collections, glob
 # example part1      6440 part2      5905
 # problem part1 249726565 part2 251135960
 
-def score_type(hand, card_order):
+def score_type(hand, cards):
     c = collections.Counter(hand)
     k = sorted(c.values())
     return [
@@ -16,18 +16,18 @@ def score_type(hand, card_order):
         [5],  # 5 of a kind
     ].index(k)
 
-def score_type_J(hand, card_order):
+def score_type_J(hand, cards):
     i = hand.find("J")
     if i != -1:
         return max(
             [
-                score_type_J(xhand, card_order)
+                score_type_J(xhand, cards)
                 for xhand in [
-                    hand[:i] + x + hand[i + 1 :] for x in set(card_order) - set("J")
+                    hand[:i] + x + hand[i + 1 :] for x in set(cards) - set("J")
                 ]
             ]
         )
-    return score_type(hand, card_order)
+    return score_type(hand, cards)
 
 def calc_total_score(L, card_order, score_type):
     g = (
@@ -37,7 +37,7 @@ def calc_total_score(L, card_order, score_type):
         )
         for (hand, bid) in L
     )
-    return sum([(i + 1) * bid for i, (_, bid) in enumerate(sorted(g))])
+    return sum((i + 1) * bid for i, (_, bid) in enumerate(sorted(g)))
 
 for fname in glob.glob("day7_input[01].txt"):
     L = [line.split() for line in open(fname)]
