@@ -1,9 +1,9 @@
 import collections, glob
 
-# example part0      6440 part2      5905
+# example part1      6440 part2      5905
 # problem part1 249726565 part2 251135960
 
-def score_type(hand, ORDER_CARDS):
+def score_type(hand, card_order):
     c = collections.Counter(hand)
     k = sorted(c.values())
     return [
@@ -16,23 +16,23 @@ def score_type(hand, ORDER_CARDS):
         [5],  # 5 of a kind
     ].index(k)
 
-def score_type_J(hand, ORDER_CARDS):
+def score_type_J(hand, card_order):
     i = hand.find("J")
     if i != -1:
         return max(
             [
-                score_type_J(xhand, ORDER_CARDS)
+                score_type_J(xhand, card_order)
                 for xhand in [
-                    hand[:i] + x + hand[i + 1 :] for x in set(ORDER_CARDS) - set("J")
+                    hand[:i] + x + hand[i + 1 :] for x in set(card_order) - set("J")
                 ]
             ]
         )
-    return score_type(hand, ORDER_CARDS)
+    return score_type(hand, card_order)
 
-def calc_total_score(L, ORDER_CARDS, score_type):
+def calc_total_score(L, card_order, score_type):
     g = (
         (
-            (score_type(hand, ORDER_CARDS), [ORDER_CARDS.index(x) for x in hand]),
+            (score_type(hand, card_order), [card_order.index(x) for x in hand]),
             int(bid),
         )
         for (hand, bid) in L
