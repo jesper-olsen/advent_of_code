@@ -16,6 +16,6 @@ for fname in sorted(glob.glob("day9_input?.txt")):
         while rows!=[]:
             row=rows.pop()
             ht=(row[0]-ht[0],row[-1]+ht[1])
-        psum = (psum[0] + ht[0], psum[1] + ht[-1])
+        psum = (psum[0] + ht[0], psum[1] + ht[1])
     print(f"{fname} part1:", psum[1])
     print(f"{fname} part2:", psum[0])
