@@ -9,14 +9,14 @@ for fname in sorted(glob.glob("day9_input?.txt")):
     psum = (0, 0)
     for history in ([int(w) for w in line.split()] for line in g):
         rows = [history]
-        while not all(n == 0 for n in rows[-1]):
+        while any(x!=0 for x in rows[-1]):
             row = [rows[-1][i]-rows[-1][i-1] for i in range(1,len(rows[-1]))]
             rows+=[row]
         first, last = 0, 0
-        for row in rows[::-1]:
-            row += [row[-1] + last]
-            row.insert(0, row[0] - first)
-            first, last = row[0], row[-1]
+        for i,row in enumerate(rows[::-1]):
+            erow=[row[0]-first]+row+[row[-1]+last]
+            rows[len(rows)-1-i]=erow
+            first, last = erow[0], erow[-1]
         psum = (psum[0] + rows[0][0], psum[1] + rows[0][-1])
     print(f"{fname} part1:", psum[1])
     print(f"{fname} part2:", psum[0])
