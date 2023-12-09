@@ -5,9 +5,9 @@ answers: input1 part1: 1972648895 part2: 919
 import glob
 
 for fname in sorted(glob.glob("day9_input?.txt")):
-    g = (line.strip() for line in open(fname, encoding="ascii"))
+    g = (line.split() for line in open(fname, encoding="ascii"))
     psum = (0, 0)
-    for history in ([int(w) for w in line.split()] for line in g):
+    for history in ([int(w) for w in l] for l in g):
         rows = [history]
         while any(x!=0 for x in rows[-1]):
             diff=[rows[-1][i]-rows[-1][i-1] for i in range(1,len(rows[-1]))]
